@@ -30,7 +30,7 @@ jobs:
           ./cmake-build-release/HuffmanCodeDecode -u test_files/output.huff test_files/decoded.txt
           diff test_files/input.txt test_files/decoded.txt
 
-            - name: Archive release
+      - name: Archive release
         run: |
           zip -j HuffmanCodeDecode_${{ github.sha }}.zip ./cmake-build-release/HuffmanCodeDecode
 
