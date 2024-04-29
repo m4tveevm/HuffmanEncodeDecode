@@ -1,3 +1,4 @@
+[![C/C++ CI with Release](https://github.com/m4tveevm/HuffmanEncodeDecode/actions/workflows/ci.yml/badge.svg)](https://github.com/m4tveevm/HuffmanEncodeDecode/actions/workflows/c-cpp.yml)
 # Huffman Code Decode
 
 ## Table of Contents
