@@ -1,0 +1,4 @@
+# ninja log v5
+737	857	1714416198726078850	HuffmanCodeDecode	3253dbe04f1decf7
+10	737	1714416198601942717	CMakeFiles/HuffmanCodeDecode.dir/main.cpp.o	4d8b9124efdfb0d1
+2	61	1714417684884477167	build.ninja	d28e1e3a6bd54d2b
