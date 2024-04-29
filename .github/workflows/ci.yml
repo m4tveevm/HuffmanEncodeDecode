@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-and-release:
+  build-and-test:
 
     runs-on: ubuntu-latest
 
@@ -17,5 +17,25 @@ jobs:
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y build-essential cmake
 
-      - name: Configure CMake
-        run: cmake -S . -B cmake-build-debug
+      - name: Configure CMake (Release build)
+        run: cmake -S . -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build cmake-build-release
+
+      - name: Run tests
+        run: |
+          chmod +x ./cmake-build-release/HuffmanCodeDecode
+          ./cmake-build-release/HuffmanCodeDecode -z test_files/input.txt test_files/output.huff
+          ./cmake-build-release/HuffmanCodeDecode -u test_files/output.huff test_files/decoded.txt
+          diff test_files/expected.txt test_files/decoded.txt
+
+      - name: Archive release
+        run: |
+          zip -j HuffmanCodeDecode_v1.${{ github.sha }}.zip ./cmake-build-release/HuffmanCodeDecode
+
+      - name: Upload release as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: HuffmanCodeDecode_v1.${{ github.sha }}
+          path: HuffmanCodeDecode_v1.${{ github.sha }}.zip
