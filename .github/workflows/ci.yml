@@ -30,12 +30,27 @@ jobs:
           ./cmake-build-release/HuffmanCodeDecode -u test_files/output.huff test_files/decoded.txt
           diff test_files/input.txt test_files/decoded.txt
 
-      - name: Archive release
+            - name: Archive release
         run: |
-          zip -j HuffmanCodeDecode_v1.${{ github.sha }}.zip ./cmake-build-release/HuffmanCodeDecode
+          zip -j HuffmanCodeDecode_${{ github.sha }}.zip ./cmake-build-release/HuffmanCodeDecode
 
-      - name: Upload release as artifact
-        uses: actions/upload-artifact@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: HuffmanCodeDecode_v1.${{ github.sha }}
-          path: HuffmanCodeDecode_v1.${{ github.sha }}.zip
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./HuffmanCodeDecode_${{ github.sha }}.zip
+          asset_name: HuffmanCodeDecode_${{ github.sha }}.zip
+          asset_content_type: application/zip
